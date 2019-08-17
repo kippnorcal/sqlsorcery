@@ -7,19 +7,11 @@ from sqlalchemy.sql import text as sa_text
 
 
 class Connection:
-    def __init__(self, schema="dbo"):
-        server = getenv("DB_SERVER")
-        db = getenv("DB")
-        user = getenv("DBUSER")
-        pwd = getenv("DBPWD")
-        driver = f"{{{pyodbc.drivers()[0]}}}"
-        params = urllib.parse.quote_plus(
-            f"DRIVER={driver};SERVER={server};DATABASE={db};UID={user};PWD={pwd}"
-        )
-        self.schema = schema
-        self.engine = create_engine(
-            f"mssql+pyodbc:///?odbc_connect={params}", isolation_level="AUTOCOMMIT"
-        )
+    def __init__(self):
+        self.server = getenv("DB_SERVER")
+        self.db = getenv("DB")
+        self.user = getenv("DB_USER")
+        self.pwd = getenv("DB_PWD")
 
     def exec_sproc(self, stored_procedure):
         sql_str = f"EXEC {self.schema}.{stored_procedure}"
@@ -44,3 +36,15 @@ class Connection:
             table, self.engine, schema=self.schema, if_exists=if_exists, index=False
         )
 
+
+class MSSQL(Connection):
+    def __init__(self, schema="dbo"):
+        super().__init__()
+        driver = f"{{{pyodbc.drivers()[0]}}}"
+        params = urllib.parse.quote_plus(
+            f"DRIVER={driver};SERVER={self.server};DATABASE={self.db};UID={self.user};PWD={self.pwd}"
+        )
+        self.engine = create_engine(
+            f"mssql+pyodbc:///?odbc_connect={params}", isolation_level="AUTOCOMMIT"
+        )
+        self.schema = schema
