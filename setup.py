@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='sqlsorcery',
-      version='0.1',
+      version='0.2',
       description='Dead simple wrapper for pandas and sqlalchemy',
       url='http://github.com/dchess/sqlsorcery',
       author='dchess',
