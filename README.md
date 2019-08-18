@@ -28,6 +28,7 @@ yes | dpkg -i msodbcsql17_17.2.0.1-1_amd64.deb
 
 ```
 DB_SERVER=
+DB_PORT=
 DB=
 DB_USER=
 DB_PWD=

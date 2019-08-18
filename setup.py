@@ -7,7 +7,7 @@ with open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 
 setup(name='sqlsorcery',
-      version='0.21',
+      version='0.3',
       description='Dead simple wrapper for pandas and sqlalchemy',
       long_description=long_description,
       long_description_content_type='text/markdown',
@@ -16,5 +16,5 @@ setup(name='sqlsorcery',
       author_email='dc.hess@gmail.com',
       license='MIT',
       packages=['sqlsorcery'],
-      install_requires=['pandas', 'sqlalchemy', 'pyodbc'],
+      install_requires=['pandas', 'sqlalchemy', 'pyodbc', 'psycopg2-binary'],
       zip_safe=False)
