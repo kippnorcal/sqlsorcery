@@ -26,12 +26,34 @@ yes | dpkg -i msodbcsql17_17.2.0.1-1_amd64.deb
 
 3. Setup a `.env` file with environment credentials
 
+Single database environment:
 ```
 DB_SERVER=
 DB_PORT=
 DB=
 DB_USER=
 DB_PWD=
+```
+
+For multi-database environment, use sql specific prefixes or specify connect vars at instantiation:
+```
+PG_SERVER=
+PG_PORT=
+PG_DB=
+PG_USER=
+PG_PWD=
+
+MS_SERVER=
+MS_DB=
+MS_USER=
+MS_PWD=
+```
+or
+
+```python
+from sqlsorcery import MSSQL
+
+sql = MSSQL(server="server_host", db="dba_name", user="username", pwd="password")
 ```
 
 ## Examples
