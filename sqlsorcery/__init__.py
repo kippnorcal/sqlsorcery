@@ -7,12 +7,6 @@ from sqlalchemy.sql import text as sa_text
 
 
 class Connection:
-    def __init__(self):
-        self.server = getenv("DB_SERVER")
-        self.db = getenv("DB")
-        self.user = getenv("DB_USER")
-        self.pwd = getenv("DB_PWD")
-
     def exec_sproc(self, stored_procedure):
         sql_str = f"EXEC {self.schema}.{stored_procedure}"
         command = sa_text(sql_str).execution_options(autocommit=True)
@@ -38,8 +32,11 @@ class Connection:
 
 
 class MSSQL(Connection):
-    def __init__(self, schema="dbo"):
-        super().__init__()
+    def __init__(self, schema="dbo", server=None, db=None, user=None, pwd=None):
+        self.server = server or getenv("MS_SERVER") or getenv("DB_SERVER")
+        self.db = db or getenv("MS_DB") or getenv("DB")
+        self.user = user or getenv("MS_USER") or getenv("DB_USER")
+        self.pwd = pwd or getenv("MS_PWD") or getenv("DB_PWD")
         driver = f"{{{pyodbc.drivers()[0]}}}"
         params = urllib.parse.quote_plus(
             f"DRIVER={driver};SERVER={self.server};DATABASE={self.db};UID={self.user};PWD={self.pwd}"
@@ -50,9 +47,12 @@ class MSSQL(Connection):
         self.schema = schema
 
 class PostgreSQL(Connection):
-    def __init__(self, schema="public"):
-        super().__init__()
-        self.port = getenv("DB_PORT")
+    def __init__(self, schema="public", server=None, port=None, db=None, user=None, pwd=None):
+        self.server = server or getenv("PG_SERVER") or getenv("DB_SERVER")
+        self.port = port or getenv("PG_PORT") or getenv("DB_PORT")
+        self.db = db or getenv("PG_DB") or getenv("DB")
+        self.user = user or getenv("PG_USER") or getenv("DB_USER")
+        self.pwd = pwd or getenv("PG_PWD") or getenv("DB_PWD")
         sid = f'{self.server}:{self.port}/{self.db}'
         cstr = f'postgres://{self.user}:{self.pwd}@{sid}'
         self.engine =  create_engine(cstr)
