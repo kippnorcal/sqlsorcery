@@ -48,3 +48,13 @@ class MSSQL(Connection):
             f"mssql+pyodbc:///?odbc_connect={params}", isolation_level="AUTOCOMMIT"
         )
         self.schema = schema
+
+class PostgreSQL(Connection):
+    def __init__(self, schema="public"):
+        super().__init__()
+        self.port = getenv("DB_PORT")
+        sid = f'{self.server}:{self.port}/{self.db}'
+        cstr = f'postgres://{self.user}:{self.pwd}@{sid}'
+        self.engine =  create_engine(cstr)
+        self.schema = schema
+
