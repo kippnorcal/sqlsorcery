@@ -76,7 +76,7 @@ from sqlsorcery import MSSQL
 
 
 sql = MSSQL()
-df = sql.query("filename.sql")
+df = sql.query_from_file("filename.sql")
 print(df)
 ```
 
