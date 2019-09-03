@@ -31,8 +31,10 @@ Single database environment:
 DB_SERVER=
 DB_PORT=
 DB=
+DB_SCHEMA=
 DB_USER=
 DB_PWD=
+
 ```
 
 For multi-database environment, use sql specific prefixes or specify connect vars at instantiation:
@@ -40,6 +42,7 @@ For multi-database environment, use sql specific prefixes or specify connect var
 PG_SERVER=
 PG_PORT=
 PG_DB=
+PG_SCHEMA=
 PG_USER=
 PG_PWD=
 
@@ -47,13 +50,14 @@ MS_SERVER=
 MS_DB=
 MS_USER=
 MS_PWD=
+MS_SCHEMA=
 ```
 or
 
 ```python
 from sqlsorcery import MSSQL
 
-sql = MSSQL(server="server_host", db="dba_name", user="username", pwd="password")
+sql = MSSQL(server="server_host", db="dba_name", schema="schema", user="username", pwd="password")
 ```
 
 ## Examples
