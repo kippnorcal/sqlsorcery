@@ -9,7 +9,7 @@ from sqlalchemy.sql import text as sa_text
 class Connection:
     def exec_sproc(self, stored_procedure):
         sql_str = f"EXEC {self.schema}.{stored_procedure}"
-        command = sa_text(sql_str)#.execution_options(autocommit=True)
+        command = sa_text(sql_str)
         return self.engine.execute(command)
 
     def _read_sql_file(self, filename):
