@@ -56,7 +56,7 @@ or
 ```python
 from sqlsorcery import MSSQL
 
-sql = MSSQL(server="server_host", db="dba_name", schema="schema", user="username", pwd="password")
+conn = MSSQL(server="server_host", db="dba_name", schema="schema", user="username", pwd="password")
 ```
 
 ## Examples
@@ -67,8 +67,8 @@ Query a table:
 from sqlsorcery import MSSQL
 
 
-sql = MSSQL()
-df = sql.query("SELECT * FROM my_table")
+conn = MSSQL()
+df = conn.query("SELECT * FROM my_table")
 print(df)
 ```
 
@@ -78,8 +78,8 @@ Query from a `.sql` file:
 from sqlsorcery import MSSQL
 
 
-sql = MSSQL()
-df = sql.query_from_file("filename.sql")
+conn = MSSQL()
+df = conn.query_from_file("filename.sql")
 print(df)
 ```
 
@@ -97,8 +97,8 @@ sample_data = [
 ]
 
 df = pd.DataFrame(sample_data)
-sql = MSSQL()
-sql.insert_into("table_name", df) 
+conn = MSSQL()
+conn.insert_into("table_name", df) 
 ```
 
 Execute a stored procedure:
@@ -107,7 +107,7 @@ Execute a stored procedure:
 from sqlsorcery import MSSQL
 
 
-sql = MSSQL()
-sql.exec_sproc("sproc_name")
+conn = MSSQL()
+conn.exec_sproc("sproc_name")
 ```
 
