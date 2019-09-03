@@ -34,7 +34,6 @@ DB=
 DB_SCHEMA=
 DB_USER=
 DB_PWD=
-
 ```
 
 For multi-database environment, use sql specific prefixes or specify connect vars at instantiation:
@@ -48,9 +47,9 @@ PG_PWD=
 
 MS_SERVER=
 MS_DB=
+MS_SCHEMA=
 MS_USER=
 MS_PWD=
-MS_SCHEMA=
 ```
 or
 
