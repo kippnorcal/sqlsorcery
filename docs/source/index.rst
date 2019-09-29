@@ -11,6 +11,7 @@ Welcome to SQLSorcery's documentation!
    :caption: README:
 
    readme
+   license
 
 Indices and tables
 ==================
