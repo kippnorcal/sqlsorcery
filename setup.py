@@ -17,6 +17,6 @@ setup(
     author_email="dc.hess@gmail.com",
     license="MIT",
     packages=["sqlsorcery"],
-    install_requires=["pandas", "sqlalchemy", "pyodbc", "psycopg2-binary"],
+    install_requires=["pandas", "sqlalchemy", "pyodbc", "psycopg2-binary", "m2r"],
     zip_safe=False,
 )
