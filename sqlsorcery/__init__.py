@@ -28,7 +28,7 @@ class Connection:
         :type stored_procedure: string
 
         :return: Stored procedure results
-        :rtype: SQLAlchemy ``ResultProxy``
+        :rtype: `SQLAlchemy.ResultProxy <https://docs.sqlalchemy.org/en/13/core/connections.html#sqlalchemy.engine.ResultProxy>`_
         """
         sql_str = f"EXEC {self.schema}.{stored_procedure}"
         command = sa_text(sql_str)
@@ -46,7 +46,7 @@ class Connection:
         :type sql_query: string
 
         :return: Resulting dataset from query
-        :rtype: Pandas ``DataFrame``
+        :rtype: `Pandas.DataFrame <https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html>`_
         """
         df = pd.read_sql_query(sql_query, self.engine)
         return df
@@ -58,7 +58,7 @@ class Connection:
         :type filename: string
 
         :return: Resulting dataset from query
-        :rtype: Pandas ``DataFrame``
+        :rtype: `Pandas.DataFrame <https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html>`_
         """
         sql_statement = self._read_sql_file(filename)
         df = pd.read_sql_query(sql_statement, self.engine)
@@ -71,7 +71,7 @@ class Connection:
         :type table: string
 
         :param df: DataFrame to be inserted
-        :type df: Pandas ``DataFrame``
+        :type df: `Pandas.DataFrame <https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html>`_
 
         :param if_exists: How to behave if the table already exists.
             Possible options: *fail*, *append*, *replace*.
