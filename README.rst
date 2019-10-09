@@ -18,6 +18,20 @@ Getting Started
 
     $ pipenv install sqlsorcery
 
+By default sqlsorcery does not install the sql dialect specific python drivers. 
+To install these, you can specify the dialects as a comma separated list of each
+dialect you will need drivers for.
+
+.. code-block:: bash
+
+    $ pipenv install sqlsorcery[mssql]
+
+OR
+
+.. code-block:: bash
+
+    $ pipenv install sqlsorcery[msql,postgres]
+
 
 2. Install MS SQL Drivers
 
