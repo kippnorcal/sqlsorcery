@@ -9,7 +9,8 @@ from os import getenv
 import urllib
 import pandas as pd
 import pyodbc
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, delete, inspect
+from sqlalchemy import Table, MetaData
 from sqlalchemy.sql import text as sa_text
 
 
@@ -21,8 +22,62 @@ class Connection:
         only be used for inheritance in the specific connection types.
     """
 
+    def get_columns(self, table):
+        """Returns the column definitions for a given table.
+
+        :param table: The name of the table to inspect. Do not include the schema prefix.
+        :type table: string
+
+        :return: A list of column definition dictionaries
+        :rtype: list
+        """
+        inspector = inspect(self.engine)
+        return inspector.get_columns(table, schema=self.schema)
+
+    def get_view_definition(self, view):
+        """Returns the view definition (DDL) for a given SQL view.
+
+        :param view: The name fo the view to inspect. Do not include the schema prefix.
+        :type view: string
+
+        :return: Multi-line string of the view definition text
+        :rtype: string
+        """
+        inspector = inspect(self.engine)
+        return inspector.get_view_definition(view, schema=self.schema)
+
+    def delete(self, tablename):
+        """Deletes all records in a given table. Does not reset identity columns.
+
+        :param tablename: Name of the table to delete records for
+        :type tablename: string
+        """
+        metadata = MetaData()
+        table = Table(tablename, metadata, autoload=True, autoload_with=self.engine, schema=self.schema)
+        self.engine.execute(delete(table))
+
+    def truncate(self, tablename):
+        """Truncates a given table. Faster than a delete and reseeds identity values.
+
+        .. note::
+            **Security Warning**: This command leverages interpolated strings and
+            as such is vulnerable to SQL-injection. Do not use in conjunction with
+            arbitrary user input. Instead, use .delete()
+
+        :param tablename: Name of the table to truncate
+        :type tablename: string
+        """
+        sql_str = f"TRUNCATE TABLE {self.schema}.{tablename}"
+        command = sa_text(sql_str).execution_options(autocommit=True)
+        self.engine.execute(command)
+
     def exec_sproc(self, stored_procedure):
         """Executes a stored procedure
+
+        .. note::
+            **Security Warning**: This command leverages interpolated strings and
+            as such is vulnerable to SQL-injection. Do not use in conjunction with
+            arbitrary user input.
 
         :param stored_procedure: The name of the stored procedure to be executed.
         :type stored_procedure: string
