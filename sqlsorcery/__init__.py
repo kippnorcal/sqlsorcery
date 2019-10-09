@@ -97,8 +97,14 @@ class Connection:
     def query(self, sql_query, params=None):
         """Executes the given sql query
 
+
         :param sql_query: SQL query string
         :type sql_query: string
+        :param params: list or dict of parameters to pass to sql query
+        :type params: list or dict
+
+        .. note::
+            See `PEP249 <https://www.python.org/dev/peps/pep-0249/>`_ for possible paramstyles.
 
         :return: Resulting dataset from query
         :rtype: `Pandas.DataFrame <https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html>`_
