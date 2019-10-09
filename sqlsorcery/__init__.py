@@ -9,7 +9,7 @@ from os import getenv
 import urllib
 import pandas as pd
 import pyodbc
-from sqlalchemy import create_engine, delete, inspect
+from sqlalchemy import create_engine, delete, inspect, update
 from sqlalchemy import Table, MetaData
 from sqlalchemy.sql import text as sa_text
 
@@ -88,6 +88,44 @@ class Connection:
         sql_str = f"EXEC {self.schema}.{stored_procedure}"
         command = sa_text(sql_str)
         return self.engine.execute(command)
+
+    def exec_cmd(self, command):
+        """Executes an arbitrary sql command on the database.
+
+        .. note::
+            **Security Warning**: This command is vulnerable to SQL-injection.
+            Do not use in conjunction with arbitrary user input.
+
+        :param command: The SQL command to be executed
+        :type command: string
+        """
+        return self.engine.execute(command)
+
+    def exec_cmd_from_file(self, filename):
+        """Executes an arbitrary sql command provided from a .sql file.
+
+        :param filename: Path to .sql file containing a query
+        :type filename: string
+
+        :return: Resulting dataset from query
+        :rtype: `Pandas.DataFrame <https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html>`_
+        """
+        sql_statement = self._read_sql_file(filename)
+        return self.engine.execute(sql_statement)
+
+    def table(self, tablename):
+        """Returns a SQLAlchemy table object for further manipulation such as updates.
+
+        :param tablename: Name of the table to return
+        :type tablename: string
+
+        :return: A table
+        :rtype: `SQLAlchemy.Table <https://docs.sqlalchemy.org/en/13/core/metadata.html#sqlalchemy.schema.Table>`_
+        """
+        metadata = MetaData()
+        table = Table(tablename, metadata, autoload=True, autoload_with=self.engine, schema=self.schema)
+        return table
+
 
     def _read_sql_file(self, filename):
         """Reads a sql file into a sql query string"""
