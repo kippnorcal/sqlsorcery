@@ -94,7 +94,7 @@ class Connection:
         with open(filename) as f:
             return f.read()
 
-    def query(self, sql_query):
+    def query(self, sql_query, params=None):
         """Executes the given sql query
 
         :param sql_query: SQL query string
@@ -103,7 +103,7 @@ class Connection:
         :return: Resulting dataset from query
         :rtype: `Pandas.DataFrame <https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html>`_
         """
-        df = pd.read_sql_query(sql_query, self.engine)
+        df = pd.read_sql_query(sql_query, self.engine, params=params)
         return df
 
     def query_from_file(self, filename):
