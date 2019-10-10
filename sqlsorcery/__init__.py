@@ -8,11 +8,13 @@
 from os import getenv
 import urllib
 import pandas as pd
-import pyodbc
 from sqlalchemy import create_engine, delete, inspect, update
 from sqlalchemy import Table, MetaData
 from sqlalchemy.sql import text as sa_text
-
+try:
+    import pyodbc
+except ImportError:
+    pyodbc = None
 
 class Connection:
     """Base class for sql connections containing shared class methods.
