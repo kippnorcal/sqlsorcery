@@ -7,7 +7,7 @@
 
 from os import getenv
 import urllib
-import cx_Oracle
+
 import pandas as pd
 from sqlalchemy import create_engine, delete, inspect, update
 from sqlalchemy import Table, MetaData
@@ -17,6 +17,11 @@ try:
     import pyodbc
 except ImportError:
     pyodbc = None
+
+try:
+    import cx_Oracle
+except ImportError:
+    cx_Oracle = None
 
 
 class Connection:
