@@ -285,22 +285,39 @@ class PostgreSQL(Connection):
 
 
 class Oracle(Connection):
+    """Child class that inherits from Connection with specific configuration
+        for connecting to Oracle PL/SQL."""
+
     def __init__(
-        self,
-        schema="public",
-        server=None,
-        port=None,
-        db=None,
-        sid=None,
-        user=None,
-        pwd=None,
+        self, schema="public", server=None, port=None, sid=None, user=None, pwd=None
     ):
+        """Initializes an Oracle database connection
+
+         .. note::
+            When object is instantiated without params, SQLSorcery will
+            attempt to pull the values from the environment. See the
+            README for examples of setting these correctly in a .env
+            file.
+        :param schema: Database object schema prefix
+        :type schema: string
+        :param server: IP or URL of database server
+        :type server: string
+        :param port: Port number
+        :type port: string
+        :param sid: Database site identifier
+        :type sid: string
+        :param user: Username for connecting to the database
+        :type user: string
+        :param pwd: Password for connecting to the database.
+            **Security Warning**: always pass this in with environment
+            variables when used in production.
+        :type pwd: string
+        """
         self.server = server or getenv("OR_SERVER") or getenv("DB_SERVER")
         self.port = port or getenv("OR_PORT") or getenv("DB_PORT")
         self.sid = sid or getenv("OR_SID") or getenv("DB_SID")
         self.user = user or getenv("OR_USER") or getenv("DB_USER")
         self.pwd = pwd or getenv("OR_PWD") or getenv("DB_PWD")
-        self.db = db or getenv("OR_DB") or getenv("DB")
         sid = cx_Oracle.makedsn(self.server, self.port, sid=self.sid)
         cstr = f"oracle://{self.user}:{self.pwd}@{sid}"
         self.engine = create_engine(cstr)
