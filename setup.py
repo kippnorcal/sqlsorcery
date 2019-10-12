@@ -21,6 +21,7 @@ setup(
     extras_require={
         "postgres": ["psycopg2-binary"],
         "mssql": ["pyodbc"],
+        "mysql": ["PyMySQL"],
         "oracle": ["cx_Oracle"],
     },
     zip_safe=False,

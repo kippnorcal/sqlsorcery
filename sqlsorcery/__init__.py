@@ -24,6 +24,11 @@ try:
 except ImportError:
     cx_Oracle = None
 
+try:
+    import pymysql
+except ImportError:
+    pymysql = None
+
 
 class Connection:
     """Base class for sql connections containing shared class methods.
@@ -341,4 +346,34 @@ class SQLite(Connection):
         """
         cstr = f"sqlite:///{path}"
         self.schema = "main"
+        self.engine = create_engine(cstr)
+
+
+class MySQL(Connection):
+    """Child class that inherits from Connection with specific configuration
+        for connecting to a MySQL  database."""
+    def __init__(self, server=None, port=None, db=None, user=None, pwd=None):
+        """Initializes a MySQL database connection
+
+        .. note::
+            When object is instantiated without params, SQLSorcery will
+            attempt to pull the values from the environment. See the
+            README for examples of setting these correctly in a .env
+            file.
+        :param server: IP or URL of database server
+        :type server: string
+        :param db: Name of database
+        :type db: string
+        :param user: Username for connecting to the database
+        :type user: string
+        :param pwd: Password for connecting to the database.
+            **Security Warning**: always pass this in with environment
+            variables when used in production.
+        :type pwd: string
+        """
+        self.server = server or getenv("MY_SERVER") or getenv("DB_SERVER")
+        self.db = db or getenv("MY_DB") or getenv("DB")
+        self.user = user or getenv("MY_USER") or getenv("DB_USER")
+        self.pwd = pwd or getenv("MY_PWD") or getenv("DB_PWD")
+        cstr = f"mysql+pymysql://{self.user}:{self.pwd}@{self.server}/{self.db}"
         self.engine = create_engine(cstr)
