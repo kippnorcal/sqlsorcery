@@ -326,7 +326,19 @@ class Oracle(Connection):
 
 
 class SQLite(Connection):
+    """Child class that inherits from Connection with specific configuration
+        for connecting to a SQLite database file."""
     def __init__(self, path=None):
-        cstr = f"sqlite://{path}"
+        """Initializes a SQLite  database connection
+
+         .. note::
+            When object is instantiated without params, SQLSorcery will
+            attempt to pull the values from the environment. See the
+            README for examples of setting these correctly in a .env
+            file.
+        :param path: Path to the .db file
+        :type schema: string
+        """
+        cstr = f"sqlite:///{path}"
         self.schema = "main"
         self.engine = create_engine(cstr)
