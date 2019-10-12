@@ -6,6 +6,7 @@
 """
 
 from os import getenv
+import sqlite3
 import urllib
 
 import pandas as pd
@@ -321,4 +322,11 @@ class Oracle(Connection):
         self.pwd = pwd or getenv("OR_PWD") or getenv("DB_PWD")
         sid = cx_Oracle.makedsn(self.server, self.port, sid=self.sid)
         cstr = f"oracle://{self.user}:{self.pwd}@{sid}"
+        self.engine = create_engine(cstr)
+
+
+class SQLite(Connection):
+    def __init__(self, path=None):
+        cstr = f"sqlite://{path}"
+        self.schema = "main"
         self.engine = create_engine(cstr)
