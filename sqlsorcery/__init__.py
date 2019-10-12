@@ -289,7 +289,7 @@ class Oracle(Connection):
         for connecting to Oracle PL/SQL."""
 
     def __init__(
-        self, schema="public", server=None, port=None, sid=None, user=None, pwd=None
+        self, schema=None, server=None, port=None, sid=None, user=None, pwd=None
     ):
         """Initializes an Oracle database connection
 
@@ -315,10 +315,10 @@ class Oracle(Connection):
         """
         self.server = server or getenv("OR_SERVER") or getenv("DB_SERVER")
         self.port = port or getenv("OR_PORT") or getenv("DB_PORT")
+        self.schema = schema or getenv("OR_SCHEMA") or getenv("DB_SCHEMA") or "public"
         self.sid = sid or getenv("OR_SID") or getenv("DB_SID")
         self.user = user or getenv("OR_USER") or getenv("DB_USER")
         self.pwd = pwd or getenv("OR_PWD") or getenv("DB_PWD")
         sid = cx_Oracle.makedsn(self.server, self.port, sid=self.sid)
         cstr = f"oracle://{self.user}:{self.pwd}@{sid}"
         self.engine = create_engine(cstr)
-        self.schema = schema
