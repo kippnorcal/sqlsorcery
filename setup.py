@@ -11,7 +11,7 @@ setup(
     version="0.1.3",
     description="Dead simple wrapper for pandas and sqlalchemy",
     long_description=long_description,
-    long_description_content_type="text/markdown",
+    long_description_content_type="text/x-rst",
     url="http://github.com/dchess/sqlsorcery",
     author="dchess",
     author_email="dc.hess@gmail.com",
