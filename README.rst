@@ -1,13 +1,13 @@
-sqlsorcery
-==========
-Dead simple wrapper for pandas and sqlalchemy
+README
+======
+SQLSorcery: Dead simple wrapper for pandas and sqlalchemy
 
 Dependencies
 ^^^^^^^^^^^^
 
 * Python3.7
 * Pipenv
-* MS SQL odbc driver
+* MS SQL odbc driver (optional)
 
 Getting Started
 ^^^^^^^^^^^^^^^
@@ -80,7 +80,7 @@ or
 
     from sqlsorcery import MSSQL
 
-    conn = MSSQL(server="server_host", db="dba_name", schema="schema", user="username", pwd="password")
+    conn = MSSQL(server="server_host", db="db_name", schema="schema", user="username", pwd="password")
 
 
 Examples
