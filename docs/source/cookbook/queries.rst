@@ -71,3 +71,19 @@ You could query with it like so:
     sql = PostgreSQL()
     df = sql.query_from_file("user_location.sql")
     print(df)
+
+
+Query a view
+------------
+
+If that previous `.sql` file was a view in the database called `vw_user_location`
+you could query it like so:
+
+.. code-block:: python
+    :linenos:   
+
+    from sqlsorcery import PostgreSQL
+
+    sql = PostgreSQL()
+    df = sql.query("SELECT * FROM vw_user_location")
+    print(df)
