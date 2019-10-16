@@ -7,11 +7,11 @@ Welcome to SQLSorcery's documentation!
 ======================================
 
 .. toctree::
-   :maxdepth: 2
-   :caption: README:
+   :maxdepth: 1
 
    readme
    license
+   cookbook/index
 
 Indices and tables
 ==================
