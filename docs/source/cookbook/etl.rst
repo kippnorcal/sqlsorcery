@@ -88,20 +88,191 @@ Query API endpoint and load into table
 
 Update table values
 -------------------
+It is often necessary to modify existing records in a table after
+loading. There are several ways to accomplish this in SQLSorcery
+depending on your use case including issuing raw commands or 
+embedding within a stored procedure.
 
-Dynamic update
+Via SQLAlchemy 
 ^^^^^^^^^^^^^^
+.. code-block:: python
+    :linenos:
 
-Complex but static update
-^^^^^^^^^^^^^^^^^^^^^^^^^
+    import datetime
+    from sqlsorcery import MSSQL
+    import pandas as pd
+    
+
+    sql = MSSQL()
+    df = pd.read_csv("daily_ratings.csv")
+    sql.insert_into("ratings_cache", df)
+    table = sql.table("ratings_cache")
+    # Adds today's date as the datestamp to all records
+    table.update().values(datestamp=datetime.date.today())
+
+OR you could specify an additional :code:`WHERE` clause
+
+.. code-block:: python
+
+    # If you wanted to override a specific rating
+    table.update().where(table.c.name=="Top Gun").values(avgRating="10")
+
+Via pandas
+^^^^^^^^^^
+With this scenario you would just modify the dataframe in memory
+before inserting into the database. This has trade-offs for 
+performance as well as traceability.
+
+.. code-block:: python
+    :linenos:
+
+    import datetime
+    from sqlsorcery import MSSQL
+    import pandas as pd
+    
+
+    sql = MSSQL()
+    df = pd.read_csv("daily_ratings.csv")
+    df["datestamp"] = datetime.date.today()
+    sql.insert_into("ratings_cache", df)
+
+Via command
+^^^^^^^^^^^
+
+.. code-block:: python
+    :linenos:
+
+    from sqlsorcery import MSSQL
+    import pandas as pd
+    
+
+    sql = MSSQL()
+    df = pd.read_csv("daily_ratings.csv")
+    sql.insert_into("ratings_cache", df)
+    sql.exec_cmd("UPDATE ratings_cache SET datestamp = GETDATE()")
 
 Truncate a table
 ----------------
+It is often desirable to empty a table's contents before
+loading additional records during an ETL process. This is
+commonly used in conjuntion with a cache table which will
+be further transformed after the raw data is loaded into the
+database.
+
+There are several ways to accomplish this in SQLSorcery
+depending on your use case.
+
+Drop and replace during insert
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code-block:: python
+
+    from sqlsorcery import MSSQL
+    import pandas as pd
+
+    sql = MSSQL()
+    df = pd.read_csv("daily_ratings.csv")
+    sql.insert_into("ratings_cache", df, if_exists="replace")
+
+Truncate all records
+^^^^^^^^^^^^^^^^^^^^
+Most databases support :code:`TRUNCATE TABLE` statements which
+differ from :code:`DELETE FROM` statements in how logging and
+diskspace is handled. A truncate will also reset any identity
+column on the table.
+
+.. code-block:: python
+    :linenos:
+
+    from sqlsorcery import MSSQL
+    import pandas as pd
+
+    sql = MSSQL()
+    sql.truncate("ratings_cache")
+    df = pd.read_csv("daily_ratings.csv")
+    sql.insert_into("ratings_cache", df)
+
+Delete all records
+^^^^^^^^^^^^^^^^^^
+This will flush the table's contents, but will not reset the values in
+the identity column (such as an id or primary key). This is useful if
+you will want the insert to fail if the schema has changed.
+
+.. code-block:: python
+    :linenos:
+
+    from sqlsorcery import MSSQL
+    import pandas as pd
+
+    sql = MSSQL()
+    sql.delete("ratings_cache")
+    df = pd.read_csv("daily_ratings.csv")
+    sql.insert_into("ratings_cache", df)
+
+Delete specific records
+^^^^^^^^^^^^^^^^^^^^^^^
+You might also find it necessary to only delete a subset of records.
+To do so you can drop down into `SQLAlchemy` to pass a :code:`WHERE`
+clause.
+
+
+.. code-block:: python
+    :linenos:
+
+    import datetime
+    from sqlsorcery import MSSQL
+    import pandas as pd
+    
+
+    sql = MSSQL()
+    table = sql.table("ratings_cache")
+    table.delete().where(table.c.datestamp == datetime.date.today())
+    df = pd.read_csv("daily_ratings.csv")
+    sql.insert_into("ratings_cache", df)
 
 Execute a stored procedure
 --------------------------
 
-*Upsert example*
+The following command will execute a stored procedure called 
+`sproc_upsert_ratings` which merges data from a daily cache
+table of movie ratings into longitudinal table which stores
+all the daily results over time.
+
+.. code-block:: python
+    :linenos:
+
+    from sqlsorcery import MSSQL
+    import pandas as pd
+
+    sql = MSSQL()
+    df = pd.read_csv("daily_ratings.csv")
+    sql.insert_into("ratings_cache", df, if_exists="replace")
+    sql.exec_sproc("sproc_upsert_ratings")
+
+The content of this stored procedure might look like:
+
+.. code-block:: sql
+    :linenos:
+
+    IF OBJECT_ID('sproc_upsert_ratings') IS NULL
+        EXEC('CREATE PROCEDURE sproc_upsert_ratings AS SET NOCOUNT ON;')
+    GO
+    
+    ALTER PROCEDURE dbo.sproc_upsert_ratings AS
+    BEGIN  
+        SET NOCOUNT ON;  
+  
+        MERGE dbo.factRatings AS target  
+        USING dbo.ratings_cache AS source 
+        ON (target.id = source.id)  
+        WHEN MATCHED THEN
+            UPDATE SET name = source.Name
+                ,avgRating = source.avgRating
+                ,numVotes = source.numVotes
+        WHEN NOT MATCHED THEN  
+            INSERT (id, name, avgRating, numVotes)
+            VALUES (source.id, source.name, source.avgRating, source.numVotes) 
+    END; 
 
 Execute any arbitrary command 
 -----------------------------
