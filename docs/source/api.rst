@@ -1,5 +1,7 @@
-sqlsorcery package
-==================
+.. _api:
+
+API
+===
 
 Module contents
 ---------------

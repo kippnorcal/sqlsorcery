@@ -16,4 +16,5 @@ Welcome to SQLSorcery's documentation!
 Full API Reference
 ------------------
 
+* :ref:`api`
 * :ref:`genindex`
