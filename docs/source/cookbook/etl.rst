@@ -4,7 +4,10 @@ ETL
 SQLSorcery is also useful for simple script based ETL actions. 
 
 .. note:: Keep in mind performance constraints when attempting 
-    bulk insertions. 
+    bulk insertions. Postgres and MSSQL have bulk insert configs
+    defaulted but they can fail on very large inserts if used with
+    limited memory. You can override this setting by passing 
+    :code:`bulk_insert=False` to the connection class.
 
 Insert csv to table
 -------------------
@@ -21,32 +24,6 @@ into a MySQL table.
     df = pd.read_csv("title.ratings.tsv", sep="\t")
     sql.insert_into("ratings", df)
 
-Performance Testing
-^^^^^^^^^^^^^^^^^^^
-
-The following bulk insert metrics were gathered using two datasets from IMDB:
-
-1. **medium sized**: `title.ratings.tsv <https://datasets.imdbws.com/title.ratings.tsv.gz>`_ 16MB ~980K records
-2. **large sized**: `title.basics.tsv <https://datasets.imdbws.com/title.basics.tsv.gz>`_ 506MB ~6.2m records
-
-Elapsed time to insert was measured using unix time command.
-
-.. code-block:: bash
-
-    $ time pipenv run python main.py
-
-
-.. csv-table:: 
-   :header: "Database", "Medium Size", "Large Size"
-   :widths: 50, 20, 20
-
-   "**Microsoft SQL** [#]_", "4m14.592s", "-----"                     
-   "**MySQL**", "0m34.074s", "6m35.116s"
-   "**Oracle**", "", ""                                         
-   "**PostgreSQL**", "1m58.262s", "19m20.362s"                          
-   "**SQLite**", "0m10.381s", "2m13.472s"     
-
-.. [#] MSSQL timed out for me at 600K+ records. For larger batch inserts, consider increasing the memory and/or cpu allocation.
 
 Copy table between databases
 ----------------------------
