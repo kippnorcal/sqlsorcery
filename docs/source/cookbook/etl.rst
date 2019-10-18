@@ -259,7 +259,7 @@ Execute any arbitrary command
 Any valid SQL command can be passed raw to be executed. This is a catch
 all for things like function calls, create, or drop commands, etc.
 
-Example: Create a table from SQL command string
+Create a table from SQL command string
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code-block:: python
@@ -278,7 +278,7 @@ Example: Create a table from SQL command string
     """
     sql.exec_cmd(table)
 
-Example: Create a table from a .sql file
+Create a table from a .sql file
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Assuming you have a `.sql` file named `table.auth_user.sql`:
@@ -313,3 +313,15 @@ You can execute it like so:
 
     sql = MSSQL()
     sql.exec_cmd_from_file("table.auth_user.sql")
+
+
+Drop a table from SQL command string
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code-block:: python
+    :linenos:
+
+    from sqlsorcery import MSSQL
+
+    sql = MSSQL()
+    sql.exec_cmd("DROP TABLE star_wars")

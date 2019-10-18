@@ -7,14 +7,24 @@ Welcome to SQLSorcery's documentation!
 ======================================
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
 
    readme
    license
-   cookbook/index
 
-Full API Reference
-------------------
+.. toctree::
+   :maxdepth: 1
+   :caption: Cookbook
 
-* :ref:`api`
-* :ref:`genindex`
+   cookbook/installation
+   cookbook/environment
+   cookbook/queries
+   cookbook/etl
+
+.. toctree::
+   :caption: Reference
+
+   api.rst
+   genindex
+
+
