@@ -1,37 +1,47 @@
-sqlsorcery
-==========
-Dead simple wrapper for pandas and sqlalchemy
+README
+======
 
-Dependencies
-^^^^^^^^^^^^
+.. image:: https://img.shields.io/badge/python-3.7-blue.svg 
+    :target: https://www.python.org/downloads/release/python-370/
 
-* Python3.7
-* Pipenv
-* MS SQL odbc driver
+.. image:: https://img.shields.io/badge/license-MIT-green
+    :target: https://github.com/dchess/sqlsorcery/blob/master/LICENSE
+
+.. image:: https://img.shields.io/static/v1?label=pipenv&message=latest&color=green
+    :target: https://pipenv.kennethreitz.org/en/latest/
+
+----
+
+**SQLSorcery**: Dead simple wrapper for pandas and sqlalchemy
 
 Getting Started
-^^^^^^^^^^^^^^^
+---------------
 
-1. Install this library
+Install this library
+^^^^^^^^^^^^^^^^^^^^
 
 .. code-block:: bash
 
     $ pipenv install sqlsorcery
 
-
-2. Install MS SQL Drivers
+By default sqlsorcery does not install the sql dialect specific python drivers. 
+To install these, you can specify the dialects as a comma separated list of each
+dialect you will need drivers for.
 
 .. code-block:: bash
 
-    wget https://packages.microsoft.com/debian/9/prod/pool/main/m/msodbcsql17/msodbcsql17_17.2.0.1-1_amd64.deb 
-    apt-get update
-    apt-get install -y apt-utils unixodbc unixodbc-dev
-    yes | dpkg -i msodbcsql17_17.2.0.1-1_amd64.deb
+    $ pipenv install sqlsorcery[mssql]
+
+OR
+
+.. code-block:: bash
+
+    $ pipenv install sqlsorcery[msql,postgres]
 
 
-3. Setup a `.env` file with environment credentials
-
-Single database environment:
+Setup .env file with credentials
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+For use with a single database:
 
 .. code-block:: bash
 
@@ -42,37 +52,13 @@ Single database environment:
     DB_USER=
     DB_PWD=
 
-
-For multi-database environment, use sql specific prefixes or specify connect vars at instantiation:
-
-.. code-block:: bash
-
-    PG_SERVER=
-    PG_PORT=
-    PG_DB=
-    PG_SCHEMA=
-    PG_USER=
-    PG_PWD=
-
-    MS_SERVER=
-    MS_DB=
-    MS_SCHEMA=
-    MS_USER=
-    MS_PWD=
-
-or
-
-.. code-block:: python
-
-    from sqlsorcery import MSSQL
-
-    conn = MSSQL(server="server_host", db="dba_name", schema="schema", user="username", pwd="password")
-
+Otherwise, refer to the `documentation <https://sqlsorcery.readthedocs.io/en/latest/cookbook/environment.html>`_ for instructions.
 
 Examples
-^^^^^^^^
+--------
 
-Query a table:
+Query a table
+^^^^^^^^^^^^^
 
 .. code-block:: python
 
@@ -84,7 +70,8 @@ Query a table:
     print(df)
 
 
-Query from a `.sql` file:
+Query from a `.sql` file
+^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code-block:: python
 
@@ -96,7 +83,8 @@ Query from a `.sql` file:
     print(df)
 
 
-Insert into a table:
+Insert into a table
+^^^^^^^^^^^^^^^^^^^
 
 .. code-block:: python
 
@@ -114,7 +102,8 @@ Insert into a table:
     conn.insert_into("table_name", df) 
 
 
-Execute a stored procedure:
+Execute a stored procedure
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code-block:: python
 
@@ -123,3 +112,8 @@ Execute a stored procedure:
 
     conn = MSSQL()
     conn.exec_sproc("sproc_name")
+
+Documentation
+---------------
+
+Documentation and tutorials available at `sqlsorcery.readthedocs.io <https://sqlsorcery.readthedocs.io/en/latest/>`_
