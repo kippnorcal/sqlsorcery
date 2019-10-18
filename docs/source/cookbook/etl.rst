@@ -35,15 +35,18 @@ Elapsed time to insert was measured using unix time command.
 
     $ time pipenv run python main.py
 
-================= =========== ==========
-Database          Medium Size Large Size
-================= =========== ==========
-**Microsoft SQL**                         
-**MySQL**         0m34.074s   6m35.116s   
-**Oracle**                                         
-**PostgreSQL**                                     
-**SQLite**        0m10.381s   2m13.472s                      
-================= =========== ==========
+
+.. csv-table:: 
+   :header: "Database", "Medium Size", "Large Size"
+   :widths: 50, 20, 20
+
+   "**Microsoft SQL** [#]_", "4m14.592s", "-----"                     
+   "**MySQL**", "0m34.074s", "6m35.116s"
+   "**Oracle**", "", ""                                         
+   "**PostgreSQL**", "1m58.262s", "19m20.362s"                          
+   "**SQLite**", "0m10.381s", "2m13.472s"     
+
+.. [#] MSSQL timed out for me at 600K+ records. For larger batch inserts, consider increasing the memory and/or cpu allocation.
 
 Copy table between databases
 ----------------------------
