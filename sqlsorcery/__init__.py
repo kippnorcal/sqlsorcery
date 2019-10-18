@@ -234,6 +234,8 @@ class MSSQL(Connection):
             **Security Warning**: always pass this in with environment
             variables when used in production.
         :type pwd: string
+        :param bulk_insert: Flag to enable/disable fast inserts (defaults to True)
+        :type bulk_insert: bool
         """
         self.server = server or getenv("MS_SERVER") or getenv("DB_SERVER")
         self.port = port or getenv("MS_PORT") or getenv("DB_PORT")
@@ -312,6 +314,8 @@ class PostgreSQL(Connection):
             **Security Warning**: always pass this in with environment
             variables when used in production.
         :type pwd: string
+        :param bulk_insert: Flag to enable/disable fast inserts (defaults to True)
+        :type bulk_insert: bool
         """
         self.server = server or getenv("PG_SERVER") or getenv("DB_SERVER")
         self.port = port or getenv("PG_PORT") or getenv("DB_PORT")
