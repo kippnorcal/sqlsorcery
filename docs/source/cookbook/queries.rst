@@ -52,7 +52,7 @@ If you had a `.sql` file with the following query named `user_location.sql`:
     SELECT
           u.id
         , u.username
-        , l.lattitude
+        , l.latitude
         , l.longitude
         , l.ip_address
         , u.is_staff
