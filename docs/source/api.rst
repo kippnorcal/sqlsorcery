@@ -3,9 +3,6 @@
 API
 ===
 
-Module contents
----------------
-
 .. automodule:: sqlsorcery
    :members:
    :undoc-members:
