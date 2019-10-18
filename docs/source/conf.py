@@ -15,7 +15,14 @@ import sys
 import sphinx_rtd_theme
 
 sys.path.insert(0, os.path.abspath("../.."))
-autodoc_mock_imports = ["pandas", "pyodbc", "sqlalchemy", "psycopg2-binary"]
+autodoc_mock_imports = [
+    "pandas",
+    "pyodbc",
+    "sqlalchemy",
+    "psycopg2-binary",
+    "cx_Oracle",
+    "PyMySQL",
+]
 
 # -- Project information -----------------------------------------------------
 
