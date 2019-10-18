@@ -14,6 +14,22 @@ README
 
 **SQLSorcery**: Dead simple wrapper for pandas and sqlalchemy
 
+SQLSorcery is basically some good old fashion syntactic sugar 🍬. It really 
+doesn't do anything new. It just makes doing it a little bit easier. It
+started as a connection wrapper for SQLAlchemy to cut down on the need for
+boilerplate code that was mostly just being used to keep the database
+credentials secret and then being passed to Pandas for queries and inserts.
+
+It wasn't much code, but needing to cut and paste it for each new project
+seemed like a recipe for bugs. So here we are. We've added more methods 
+to the class as well as added all of the basic dialects of SQL that 
+SQLAlchemy supports.
+
+In many cases, the methods available are less robust than SQLAlchemy and are
+more of a shortcut. When you need something that is outside the bounds of the
+defaults you can always drop back down into Pandas or SQLAlchemy to get more
+functionality/flexibility.
+
 Getting Started
 ---------------
 
@@ -65,8 +81,8 @@ Query a table
     from sqlsorcery import MSSQL
 
 
-    conn = MSSQL()
-    df = conn.query("SELECT * FROM my_table")
+    sql = MSSQL()
+    df = sql.query("SELECT * FROM my_table")
     print(df)
 
 
@@ -78,8 +94,8 @@ Query from a `.sql` file
     from sqlsorcery import MSSQL
 
 
-    conn = MSSQL()
-    df = conn.query_from_file("filename.sql")
+    sql = MSSQL()
+    df = sql.query_from_file("filename.sql")
     print(df)
 
 
@@ -98,8 +114,8 @@ Insert into a table
     ]
 
     df = pd.DataFrame(sample_data)
-    conn = MSSQL()
-    conn.insert_into("table_name", df) 
+    sql = MSSQL()
+    sql.insert_into("table_name", df) 
 
 
 Execute a stored procedure
@@ -110,8 +126,8 @@ Execute a stored procedure
     from sqlsorcery import MSSQL
 
 
-    conn = MSSQL()
-    conn.exec_sproc("sproc_name")
+    sql = MSSQL()
+    sql.exec_sproc("sproc_name")
 
 Documentation
 ---------------
