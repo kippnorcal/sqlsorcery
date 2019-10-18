@@ -32,7 +32,7 @@ OR
 
 .. code-block:: bash
 
-    $ pipenv install sqlsorcery[msql,postgres]
+    $ pipenv install sqlsorcery[mysql,postgres]
 
 
 Additional drivers
