@@ -180,7 +180,7 @@ class Connection:
         df = pd.read_sql_query(sql_statement, self.engine)
         return df
 
-    def insert_into(self, table, df, if_exists="append"):
+    def insert_into(self, table, df, if_exists="append", chunksize=None):
         """Inserts the data in a pandas dataframe into a specified sql table
 
         :param table: Name of sql table to insert data into
@@ -197,7 +197,12 @@ class Connection:
         :return: None
         """
         df.to_sql(
-            table, self.engine, schema=self.schema, if_exists=if_exists, index=False
+            table,
+            self.engine,
+            schema=self.schema,
+            if_exists=if_exists,
+            index=False,
+            chunksize=chunksize,
         )
 
 
