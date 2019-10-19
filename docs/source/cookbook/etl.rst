@@ -324,3 +324,7 @@ Drop a table from SQL command string
 
     sql = MSSQL()
     sql.exec_cmd("DROP TABLE star_wars")
+
+.. note:: Keep in mind this is merely an example of the types of
+    commands that can be sent through raw. A cleaner way to drop
+    a table is :code:`sql.table('star_wars').drop()`.
