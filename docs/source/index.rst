@@ -26,5 +26,6 @@ Welcome to SQLSorcery's documentation!
 
    api.rst
    genindex
+   Source Code <https://github.com/dchess/sqlsorcery>
 
 
