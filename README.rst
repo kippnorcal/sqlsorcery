@@ -14,21 +14,22 @@ README
 
 **SQLSorcery**: Dead simple wrapper for pandas and sqlalchemy
 
-SQLSorcery is basically some good old fashion syntactic sugar 🍬. It really 
+SQLSorcery is just some good old fashion syntactic sugar 🍬. It really 
 doesn't do anything new. It just makes doing it a little bit easier. It
 started as a connection wrapper for SQLAlchemy to cut down on the need for
-boilerplate code that was mostly just being used to keep the database
-credentials secret and then being passed to Pandas for queries and inserts.
+boilerplate code that was used to keep the database credentials secret,
+connect to the database, and then pass the connection to Pandas for 
+queries and inserts.
 
 It wasn't much code, but needing to cut and paste it for each new project
-seemed like a recipe for bugs. So here we are. We've added more methods 
-to the class as well as added all of the basic dialects of SQL that 
-SQLAlchemy supports.
+seemed like a recipe for bugs. So here we are. We've added more utility 
+methods to the module as well as added all of the basic dialects of SQL 
+that SQLAlchemy supports.
 
-In many cases, the methods available are less robust than SQLAlchemy and are
-more of a shortcut. When you need something that is outside the bounds of the
-defaults you can always drop back down into Pandas or SQLAlchemy to get more
-functionality/flexibility.
+In many cases, the methods available are less robust than the underlying 
+libraries and are more of a shortcut. When you need something that is 
+outside the bounds of the defaults you can always drop back down into 
+Pandas or SQLAlchemy to get more functionality/flexibility.
 
 Getting Started
 ---------------
@@ -40,9 +41,9 @@ Install this library
 
     $ pipenv install sqlsorcery
 
-By default sqlsorcery does not install the sql dialect specific python drivers. 
-To install these, you can specify the dialects as a comma separated list of each
-dialect you will need drivers for.
+By default, **sqlsorcery** does not install the sql dialect specific 
+python drivers. To install these, you can specify the dialects as a 
+comma separated list of each dialect you will need drivers for.
 
 .. code-block:: bash
 
@@ -52,7 +53,7 @@ OR
 
 .. code-block:: bash
 
-    $ pipenv install sqlsorcery[msql,postgres]
+    $ pipenv install sqlsorcery[mysql,postgres]
 
 
 Setup .env file with credentials
