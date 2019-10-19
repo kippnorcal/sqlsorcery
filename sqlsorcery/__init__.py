@@ -185,10 +185,8 @@ class Connection:
 
         :param table: Name of sql table to insert data into
         :type table: string
-
         :param df: DataFrame to be inserted
         :type df: `Pandas.DataFrame <https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html>`_
-
         :param if_exists: How to behave if the table already exists.
             Possible options: *fail*, *append*, *replace*.
             Default = *append*
@@ -196,7 +194,7 @@ class Connection:
         :param chunksize: Size of batch for inserts (default is all at once)
         :type chunksize: int
         :param dtype: Explicitly specify the data type for columns
-        :type dtype: dict
+        :type dtye: dict
 
         :return: None
         """
@@ -216,14 +214,7 @@ class MSSQL(Connection):
         for connecting to MS SQL."""
 
     def __init__(
-        self,
-        schema=None,
-        port=None,
-        server=None,
-        db=None,
-        user=None,
-        pwd=None,
-        bulk_insert=True,
+        self, schema=None, port=None, server=None, db=None, user=None, pwd=None
     ):
         """Initializes an MS SQL database connection
 
@@ -232,6 +223,7 @@ class MSSQL(Connection):
             attempt to pull the values from the environment. See the
             README for examples of setting these correctly in a .env
             file.
+
         :param schema: Database object schema prefix
         :type schema: string
         :param server: IP or URL of database server
@@ -244,8 +236,6 @@ class MSSQL(Connection):
             **Security Warning**: always pass this in with environment
             variables when used in production.
         :type pwd: string
-        :param bulk_insert: Flag to enable/disable fast inserts (defaults to True)
-        :type bulk_insert: bool
         """
         self.server = server or getenv("MS_SERVER") or getenv("DB_SERVER")
         self.port = port or getenv("MS_PORT") or getenv("DB_PORT")
@@ -255,7 +245,7 @@ class MSSQL(Connection):
         self.schema = schema or getenv("MS_SCHEMA") or getenv("DB_SCHEMA") or "dbo"
         self.driver = pyodbc.drivers()[-1].replace(" ", "+")
         cstr = f"mssql+pyodbc://{self.user}:{self.pwd}@{self.server}:{self.port}/{self.db}?driver={self.driver}"
-        self.engine = create_engine(cstr, fast_executemany=bulk_insert)
+        self.engine = create_engine(cstr, fast_executemany=True)
 
 
 class MySQL(Connection):
@@ -270,6 +260,7 @@ class MySQL(Connection):
             attempt to pull the values from the environment. See the
             README for examples of setting these correctly in a .env
             file.
+
         :param server: IP or URL of database server
         :type server: string
         :param db: Name of database
@@ -294,14 +285,7 @@ class PostgreSQL(Connection):
         for connecting to PostgreSQL."""
 
     def __init__(
-        self,
-        schema=None,
-        server=None,
-        port=None,
-        db=None,
-        user=None,
-        pwd=None,
-        bulk_insert=True,
+        self, schema=None, server=None, port=None, db=None, user=None, pwd=None
     ):
         """Initializes a PostgreSQL database connection
 
@@ -310,6 +294,7 @@ class PostgreSQL(Connection):
             attempt to pull the values from the environment. See the
             README for examples of setting these correctly in a .env
             file.
+
         :param schema: Database object schema prefix
         :type schema: string
         :param server: IP or URL of database server
@@ -324,8 +309,6 @@ class PostgreSQL(Connection):
             **Security Warning**: always pass this in with environment
             variables when used in production.
         :type pwd: string
-        :param bulk_insert: Flag to enable/disable fast inserts (defaults to True)
-        :type bulk_insert: bool
         """
         self.server = server or getenv("PG_SERVER") or getenv("DB_SERVER")
         self.port = port or getenv("PG_PORT") or getenv("DB_PORT")
@@ -352,6 +335,7 @@ class Oracle(Connection):
             attempt to pull the values from the environment. See the
             README for examples of setting these correctly in a .env
             file.
+
         :param schema: Database object schema prefix
         :type schema: string
         :param server: IP or URL of database server
