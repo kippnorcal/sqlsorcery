@@ -193,6 +193,10 @@ class Connection:
             Possible options: *fail*, *append*, *replace*.
             Default = *append*
         :type if_exists: string
+        :param chunksize: Size of batch for inserts (default is all at once)
+        :type chunksize: int
+        :param dtype: Explicitly specify the data type for columns
+        :type dtype: dict
 
         :return: None
         """

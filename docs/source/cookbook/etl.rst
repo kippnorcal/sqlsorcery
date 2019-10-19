@@ -9,6 +9,9 @@ SQLSorcery is also useful for simple script based ETL actions.
     limited memory. You can override this setting by passing 
     :code:`bulk_insert=False` to the connection class.
 
+    You can also improve performance by batching inserts using the 
+    :code:`chunksize` param. A sane default is batches of *1000*.
+
 Insert csv to table
 -------------------
 Insert ~1 million `IMDB ratings <https://datasets.imdbws.com/title.ratings.tsv.gz>`_ 
