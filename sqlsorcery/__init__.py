@@ -238,7 +238,7 @@ class MSSQL(Connection):
         :type pwd: string
         """
         self.server = server or getenv("MS_SERVER") or getenv("DB_SERVER")
-        self.port = port or getenv("MS_PORT") or getenv("DB_PORT")
+        self.port = port or getenv("MS_PORT") or getenv("DB_PORT") or "1433"
         self.db = db or getenv("MS_DB") or getenv("DB")
         self.user = user or getenv("MS_USER") or getenv("DB_USER")
         self.pwd = pwd or getenv("MS_PWD") or getenv("DB_PWD")
@@ -263,6 +263,8 @@ class MySQL(Connection):
 
         :param server: IP or URL of database server
         :type server: string
+        :param port: Port number 
+        :type port: string
         :param db: Name of database
         :type db: string
         :param user: Username for connecting to the database
@@ -273,10 +275,11 @@ class MySQL(Connection):
         :type pwd: string
         """
         self.server = server or getenv("MY_SERVER") or getenv("DB_SERVER")
+        self.port = port or getenv("MY_PORT") or getenv("DB_PORT") or "3306"
         self.db = db or getenv("MY_DB") or getenv("DB")
         self.user = user or getenv("MY_USER") or getenv("DB_USER")
         self.pwd = pwd or getenv("MY_PWD") or getenv("DB_PWD")
-        cstr = f"mysql+pymysql://{self.user}:{self.pwd}@{self.server}/{self.db}"
+        cstr = f"mysql+pymysql://{self.user}:{self.pwd}@{self.server}:{self.port}/{self.db}"
         self.engine = create_engine(cstr)
 
 
@@ -311,7 +314,7 @@ class PostgreSQL(Connection):
         :type pwd: string
         """
         self.server = server or getenv("PG_SERVER") or getenv("DB_SERVER")
-        self.port = port or getenv("PG_PORT") or getenv("DB_PORT")
+        self.port = port or getenv("PG_PORT") or getenv("DB_PORT") or "5432"
         self.db = db or getenv("PG_DB") or getenv("DB")
         self.user = user or getenv("PG_USER") or getenv("DB_USER")
         self.pwd = pwd or getenv("PG_PWD") or getenv("DB_PWD")
@@ -352,7 +355,7 @@ class Oracle(Connection):
         :type pwd: string
         """
         self.server = server or getenv("OR_SERVER") or getenv("DB_SERVER")
-        self.port = port or getenv("OR_PORT") or getenv("DB_PORT")
+        self.port = port or getenv("OR_PORT") or getenv("DB_PORT") or "1521"
         self.schema = schema or getenv("OR_SCHEMA") or getenv("DB_SCHEMA") or "public"
         self.sid = sid or getenv("OR_SID") or getenv("DB_SID")
         self.user = user or getenv("OR_USER") or getenv("DB_USER")
