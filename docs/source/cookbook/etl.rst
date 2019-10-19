@@ -3,11 +3,10 @@ ETL
 
 SQLSorcery is also useful for simple script based ETL actions. 
 
-.. note:: Keep in mind performance constraints when attempting 
-    bulk insertions. Postgres and MSSQL have bulk insert configs
-    defaulted but they can fail on very large inserts if used with
-    limited memory. You can override this setting by passing 
-    :code:`bulk_insert=False` to the connection class.
+.. note:: Keep in mind memory constraints when attempting 
+    bulk insertions. You can also improve performance by batching 
+    inserts using the :code:`chunksize` param. A sane default is 
+    batches of *1000*.
 
 Insert csv to table
 -------------------
@@ -325,3 +324,7 @@ Drop a table from SQL command string
 
     sql = MSSQL()
     sql.exec_cmd("DROP TABLE star_wars")
+
+.. note:: Keep in mind this is merely an example of the types of
+    commands that can be sent through raw. A cleaner way to drop
+    a table is :code:`sql.table('star_wars').drop()`.
