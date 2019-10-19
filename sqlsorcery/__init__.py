@@ -10,7 +10,7 @@ import sqlite3
 import urllib
 
 import pandas as pd
-from sqlalchemy import create_engine, delete, inspect, update
+from sqlalchemy import create_engine, delete, inspect
 from sqlalchemy import Table, MetaData
 from sqlalchemy.sql import text as sa_text
 
