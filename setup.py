@@ -8,7 +8,7 @@ with open(path.join(this_directory, "README.rst"), encoding="utf-8") as f:
 
 setup(
     name="sqlsorcery",
-    version="0.1.3",
+    version="0.1.4",
     description="Dead simple wrapper for pandas and sqlalchemy",
     long_description=long_description,
     long_description_content_type="text/x-rst",

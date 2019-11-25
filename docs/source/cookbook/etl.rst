@@ -201,7 +201,7 @@ clause.
     import datetime
     from sqlsorcery import MSSQL
     import pandas as pd
-    
+  
 
     sql = MSSQL()
     table = sql.table("ratings_cache")
@@ -252,6 +252,10 @@ The content of this stored procedure might look like:
             INSERT (id, name, avgRating, numVotes)
             VALUES (source.id, source.name, source.avgRating, source.numVotes) 
     END; 
+
+.. note:: If your stored procedure does not return a result, you can/should
+        pass the `autocommit=True` param. For more information on autocommit 
+        see `SQLAlchemy's documentation <https://docs.sqlalchemy.org/en/13/core/connections.html#understanding-autocommit>`
 
 Execute any arbitrary command 
 -----------------------------
