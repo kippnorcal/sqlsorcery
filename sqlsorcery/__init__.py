@@ -83,7 +83,7 @@ class Connection:
         command = sa_text(sql_str).execution_options(autocommit=True)
         self.engine.execute(command)
 
-    def exec_sproc(self, stored_procedure):
+    def exec_sproc(self, stored_procedure, autocommit=False):
         """Executes a stored procedure
 
         .. note::
@@ -93,12 +93,14 @@ class Connection:
 
         :param stored_procedure: The name of the stored procedure to be executed.
         :type stored_procedure: string
+        :param autocommit: Determines how to handle transactions (default=False)
+        :type autocommit: boolean
 
         :return: Stored procedure results
         :rtype: `SQLAlchemy.ResultProxy <https://docs.sqlalchemy.org/en/13/core/connections.html#sqlalchemy.engine.ResultProxy>`_
         """
         sql_str = f"EXEC {self.schema}.{stored_procedure}"
-        command = sa_text(sql_str)
+        command = sa_text(sql_str).execution_options(autocommit=autocommit)
         return self.engine.execute(command)
 
     def exec_cmd(self, command):
