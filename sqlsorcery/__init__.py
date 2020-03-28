@@ -325,6 +325,26 @@ class PostgreSQL(Connection):
         cstr = f"postgres+psycopg2://{self.user}:{self.pwd}@{sid}"
         self.engine = create_engine(cstr, executemany_mode="batch")
 
+    def exec_sproc(self, stored_procedure, autocommit=False):
+        """Executes a stored procedure using the Postgres syntax
+
+        .. note::
+            **Security Warning**: This command leverages interpolated strings and
+            as such is vulnerable to SQL-injection. Do not use in conjunction with
+            arbitrary user input.
+
+        :param stored_procedure: The name of the stored procedure to be executed.
+        :type stored_procedure: string
+        :param autocommit: Determines how to handle transactions (default=False)
+        :type autocommit: boolean
+
+        :return: Stored procedure results
+        :rtype: `SQLAlchemy.ResultProxy <https://docs.sqlalchemy.org/en/13/core/connections.html#sqlalchemy.engine.ResultProxy>`_
+        """
+        sql_str = f"CALL {self.schema}.{stored_procedure}();"
+        command = sa_text(sql_str).execution_options(autocommit=autocommit)
+        return self.engine.execute(command)
+
 
 class Oracle(Connection):
     """Child class that inherits from Connection with specific configuration
