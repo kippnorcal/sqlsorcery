@@ -23,7 +23,7 @@ setup(
         "mssql": ["pyodbc"],
         "mysql": ["PyMySQL"],
         "oracle": ["cx_Oracle"],
-        "bigquery": ["pybigquery"],
+        "bigquery": ["pandas-gbq"],
     },
     zip_safe=False,
 )

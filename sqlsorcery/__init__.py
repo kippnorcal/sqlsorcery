@@ -210,6 +210,7 @@ class Connection:
             dtype=dtype,
         )
 
+
 class BigQuery(Connection):
     """Child class that inherits from Connection with specific configuartion
         for connecting to Google BigQuery."""
@@ -228,10 +229,59 @@ class BigQuery(Connection):
         :param creds: Filepath to service account credentials json file
         :type creds: string
         """
-        self.schema = getenv("BQ_DATASET") or getenv("DB_DATASET") or dataset
-        self.creds = getenv("BQ_CREDS") or getenv("DB_CREDS") or creds
-        cstr = f"bigquery://"
-        self.engine = create_engine(cstr, credentials_path=self.creds)
+        self.creds = getenv("BQ_CREDS") or creds
+        self.schema = getenv("BQ_DATASET") or dataset
+
+    def query(self, sql_query):
+        """Executes the given sql query
+
+        :param sql_query: SQL query string
+        :type sql_query: string
+
+        :return: Resulting dataset from query
+        :rtype: `Pandas.DataFrame <https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html>`_
+        """
+        df = pd.read_gbq(sql_query, progress_bar_type=None, credentials=self.creds)
+        return df
+
+    def query_from_file(self, filename):
+        """Executes the given query from a provided sql file
+
+        :param filename: Path to .sql file containing a query
+        :type filename: string
+
+        :return: Resulting dataset from query
+        :rtype: `Pandas.DataFrame <https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html>`_
+        """
+        sql_statement = self._read_sql_file(filename)
+        df = pd.read_gbq(sql_statement, progress_bar_type=None, credentials=self.creds)
+        return df
+
+    def insert_into(self, table, df, if_exists="append", chunksize=None):
+        """Inserts the data in a pandas dataframe into a specified sql table
+
+        :param table: Name of sql table to insert data into
+        :type table: string
+        :param df: DataFrame to be inserted
+        :type df: `Pandas.DataFrame <https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html>`_
+        :param if_exists: How to behave if the table already exists.
+            Possible options: *fail*, *append*, *replace*.
+            Default = *append*
+        :type if_exists: string
+        :param chunksize: Size of batch for inserts (default is all at once)
+        :type chunksize: int
+
+        :return: None
+        """
+        df.to_gbq(
+            table,
+            schema=self.schema,
+            if_exists=if_exists,
+            index=False,
+            chunksize=chunksize,
+            progress_bar=False,
+        )
+
 
 class MSSQL(Connection):
     """Child class that inherits from Connection with specific configuration
