@@ -98,6 +98,16 @@ you can combine the params in your `.env` file for easy management.
     PG_USER=
     PG_PWD=
 
+**Google BigQuery**
+
+BigQuery uses dataset similar to how the others use schema. For autorization
+a json credentials file is needed. The filepath is passed as the creds var.
+
+.. code-block:: bash
+
+    BQ_DATASET=
+    BQ_CREDS=
+
 **SQLite**
 
 SQLite only requires a filepath to connect. It is generally unnecessary
