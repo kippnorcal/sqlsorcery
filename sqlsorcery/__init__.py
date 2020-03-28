@@ -210,6 +210,28 @@ class Connection:
             dtype=dtype,
         )
 
+class BigQuery(Connection):
+    """Child class that inherits from Connection with specific configuartion
+        for connecting to Google BigQuery."""
+
+    def __init__(self, dataset=None, creds=None):
+        """Initializes a BigQuery database connection
+
+        .. note::
+            When objects is instantiated without params, SQLSorcery will
+            attempt to pull the values from the environment. See the
+            README for examples of setting these correctly in a .env
+            file.
+
+        :param dataset: Google dataset name
+        :type dataset: string
+        :param creds: Filepath to service account credentials json file
+        :type creds: string
+        """
+        self.schema = getenv("BQ_DATASET") or getenv("DB_DATASET") or dataset
+        self.creds = getenv("BQ_CREDS") or getenv("DB_CREDS") or creds
+        cstr = f"bigquery://"
+        self.engine = create_engine(cstr, credentials_path=self.creds)
 
 class MSSQL(Connection):
     """Child class that inherits from Connection with specific configuration
