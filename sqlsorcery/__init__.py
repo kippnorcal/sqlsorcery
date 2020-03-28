@@ -341,7 +341,7 @@ class PostgreSQL(Connection):
         :return: Stored procedure results
         :rtype: `SQLAlchemy.ResultProxy <https://docs.sqlalchemy.org/en/13/core/connections.html#sqlalchemy.engine.ResultProxy>`_
         """
-        sql_str = f"CALL {self.schema}.{stored_procedure}"
+        sql_str = f"CALL {self.schema}.{stored_procedure};"
         command = sa_text(sql_str).execution_options(autocommit=autocommit)
         return self.engine.execute(command)
 
