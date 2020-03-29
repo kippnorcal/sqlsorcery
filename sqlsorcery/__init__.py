@@ -233,7 +233,11 @@ class BigQuery(Connection):
         """
         self.creds = getenv("BQ_CREDS") or creds
         self.dataset = getenv("BQ_DATASET") or dataset
-        self.project_id = getenv("BQ_PROJECT_ID") or project_id
+        if getenv("BQ_CREDS"):
+            with open(self.cred) as f:
+                self.project_id = json.load(f)["project_id"]
+        else:
+            self.project_id = getenv("BQ_PROJECT_ID") or project_id
 
     def query(self, sql_query):
         """Executes the given sql query
