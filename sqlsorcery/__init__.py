@@ -260,7 +260,7 @@ class BigQuery(Connection):
     def insert_into(self, table, df, if_exists="append", chunksize=None):
         """Inserts the data in a pandas dataframe into a specified sql table
 
-        :param table: Name of sql table to insert data into
+        :param table: Name of bigquery table in the form of dataset.tablename
         :type table: string
         :param df: DataFrame to be inserted
         :type df: `Pandas.DataFrame <https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html>`_
@@ -275,7 +275,6 @@ class BigQuery(Connection):
         """
         df.to_gbq(
             table,
-            schema=self.schema,
             if_exists=if_exists,
             index=False,
             chunksize=chunksize,
