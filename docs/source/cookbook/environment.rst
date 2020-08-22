@@ -65,6 +65,7 @@ you can combine the params in your `.env` file for easy management.
     MS_SCHEMA=
     MS_USER=
     MS_PWD=
+    MS_DRIVER=(optional if not using a system with a single driver install)
 
 **MySQL**
 
