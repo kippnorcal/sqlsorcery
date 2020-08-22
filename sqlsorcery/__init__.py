@@ -216,7 +216,7 @@ class MSSQL(Connection):
         for connecting to MS SQL."""
 
     def __init__(
-        self, schema=None, port=None, server=None, db=None, user=None, pwd=None
+        self, schema=None, port=None, server=None, db=None, user=None, pwd=None, driver=None
     ):
         """Initializes an MS SQL database connection
 
@@ -238,6 +238,8 @@ class MSSQL(Connection):
             **Security Warning**: always pass this in with environment
             variables when used in production.
         :type pwd: string
+        :param driver: Name of MS SQL driver installed in system
+        :type driver: string
         """
         self.server = server or getenv("MS_SERVER") or getenv("DB_SERVER")
         self.port = port or getenv("MS_PORT") or getenv("DB_PORT") or "1433"
@@ -245,9 +247,12 @@ class MSSQL(Connection):
         self.user = user or getenv("MS_USER") or getenv("DB_USER")
         self.pwd = pwd or getenv("MS_PWD") or getenv("DB_PWD")
         self.schema = schema or getenv("MS_SCHEMA") or getenv("DB_SCHEMA") or "dbo"
-        self.driver = pyodbc.drivers()[-1].replace(" ", "+")
+        self.driver = driver or getenv("MS_DRIVER") or self._get_driver()
         cstr = f"mssql+pyodbc://{self.user}:{self.pwd}@{self.server}:{self.port}/{self.db}?driver={self.driver}"
         self.engine = create_engine(cstr, fast_executemany=True)
+
+    def _get_driver(self):
+        return pyodbc.drivers()[-1].replace(" ", "+")
 
 
 class MySQL(Connection):

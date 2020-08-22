@@ -116,7 +116,7 @@ Insert into a table
 
     df = pd.DataFrame(sample_data)
     sql = MSSQL()
-    sql.insert_into("table_name", df) 
+    sql.insert_into("table_name", df)
 
 
 Execute a stored procedure
