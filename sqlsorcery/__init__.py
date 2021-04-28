@@ -327,7 +327,7 @@ class PostgreSQL(Connection):
         self.pwd = pwd or getenv("PG_PWD") or getenv("DB_PWD")
         self.schema = schema or getenv("PG_SCHEMA") or getenv("DB_SCHEMA") or "public"
         sid = f"{self.server}:{self.port}/{self.db}"
-        cstr = f"postgres+psycopg2://{self.user}:{self.pwd}@{sid}"
+        cstr = f"postgresql+psycopg2://{self.user}:{self.pwd}@{sid}"
         self.engine = create_engine(cstr, executemany_mode="batch")
 
 
